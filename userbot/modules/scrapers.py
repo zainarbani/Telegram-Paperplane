@@ -23,9 +23,7 @@ from requests import get
 
 from userbot import (BOTLOG, BOTLOG_CHATID, CMD_HELP, WOLFRAM_ID, bot)
 from userbot.events import register, grp_exclude
-
-# Default language to EN
-LANG = "en"
+from userbot.modules.locales import get_lang
 
 
 @register(outgoing=True, pattern="^.img (.*)")
@@ -189,7 +187,7 @@ async def text_to_speech(query):
         return
 
     try:
-        tts = gTTS(message, tld='com', lang=LANG)
+        tts = gTTS(message, tld='com', lang=get_lang())
         tts.save("k.mp3")
     except AssertionError:
         await query.edit('The text is empty.\n'
@@ -233,7 +231,7 @@ async def translateme(trans):
         return
 
     try:
-        reply_text = translator.translate(deEmojify(message), dest=LANG)
+        reply_text = translator.translate(deEmojify(message), dest=get_lang())
     except ValueError:
         await trans.edit("Invalid destination language.")
         return
@@ -250,18 +248,6 @@ async def translateme(trans):
             BOTLOG_CHATID,
             f"Translate query {message} was executed successfully",
         )
-
-
-@register(pattern="^.lang (.*)", outgoing=True)
-@grp_exclude()
-async def lang(value):
-    """ For .lang command, change the default langauge of userbot scrapers. """
-    global LANG
-    LANG = value.pattern_match.group(1)
-    await value.edit("Default language changed to **" + LANG + "**")
-    if BOTLOG:
-        await value.client.send_message(
-            BOTLOG_CHATID, "Default language changed to **" + LANG + "**")
 
 
 def deEmojify(inputString):
@@ -299,7 +285,6 @@ CMD_HELP.update({
         " - `.ud <query>`: Search on Urban Dictionary for query.\n"
         " - `.tts <query>`: Text-to-Speech the query (argument or reply) to the saved language.\n"
         " - `.trt <query>`: Translate the query (argument or reply) to the saved language.\n"
-        " - `.lang <lang>`: Changes the default language of trt and TTS modules.\n"
         " - `.wolfram <query>: Get answers to questions using WolframAlpha Spoken Results API."
     ]
 })

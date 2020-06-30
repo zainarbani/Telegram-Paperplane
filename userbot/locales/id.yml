@@ -1,0 +1,13 @@
+# Paperplane
+id:
+  # Common
+  alive: |
+    **Paperplane sudah siap!**
+    
+    User: {user}
+    Versi Paperplane: {botv}
+    Versi Telethon: {telv}
+    Versi Python: {pyv}
+    Status database: {db}
+  # Locales
+  lang_changed: "Bahasa berhasil dirubah ke: **{}**"

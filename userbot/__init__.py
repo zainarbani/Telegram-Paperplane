@@ -14,6 +14,7 @@ from dotenv import load_dotenv
 from pyDownload import Downloader
 from pylast import LastFMNetwork, md5
 from pymongo import MongoClient
+from yaml import safe_load
 from redis import StrictRedis
 from requests import get
 from telethon import TelegramClient
@@ -162,6 +163,13 @@ dl1 = Downloader(url=url1, filename="bin/cmrudl")
 
 os.chmod('bin/megadown', 0o755)
 os.chmod('bin/cmrudl', 0o755)
+
+# Locales
+LOCALES = {}
+locales_dir = os.path.abspath("userbot/locales")
+for i in os.listdir(locales_dir):
+    with open(os.path.join(locales_dir, i), "r") as f:
+        LOCALES.update(safe_load(f))
 
 # Global Variables
 COUNT_MSG = 0

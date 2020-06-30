@@ -1,0 +1,13 @@
+# Paperplane
+en:
+  # Common
+  alive: |
+    **Paperplane is alive!**
+    
+    User: {user}
+    Paperplane version: {botv}
+    Telethon version: {telv}
+    Python version: {pyv}
+    Database status: {db}
+  # Locales
+  lang_changed: "Default language changed to: **{}**"

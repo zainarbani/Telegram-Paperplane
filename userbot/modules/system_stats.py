@@ -15,6 +15,7 @@ from telethon import version
 
 from userbot import CMD_HELP, is_mongo_alive, is_redis_alive
 from userbot.events import register, grp_exclude
+from userbot.modules.locales import get_reply
 
 # ================= CONSTANT =================
 DEFAULTUSER = uname().node
@@ -143,14 +144,16 @@ async def amireallyalive(alive):
         db = "Redis Cache seems to be failing!"
     else:
         db = "Databases functioning normally!"
-    await alive.edit("`"
-                     "Paperplane is alive! Your bot is running \n\n"
-                     f"Telethon version: {version.__version__} \n"
-                     f"Python: {python_version()} \n"
-                     f"User: {DEFAULTUSER} \n"
-                     f"Database status: {db}\n"
-                     f"Tagged bot version: v1.0"
-                     "`")
+    botv = "1.0"
+    await alive.edit(
+        get_reply("alive").format(
+            botv=botv,
+            telv=version.__version__,
+            pyv=python_version(),
+            user=DEFAULTUSER,
+            db=db,
+        )
+    )
 
 
 @register(outgoing=True, pattern="^.aliveu")
