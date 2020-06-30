@@ -16,10 +16,7 @@ from telethon import version
 from userbot import CMD_HELP, is_mongo_alive, is_redis_alive
 from userbot.events import register, grp_exclude
 from userbot.modules.locales import get_reply
-
-# ================= CONSTANT =================
-DEFAULTUSER = uname().node
-# ============================================
+from userbot.modules.dbhelper import get_uname, set_uname
 
 
 @register(outgoing=True, pattern="^.sysd$")
@@ -150,7 +147,7 @@ async def amireallyalive(alive):
             botv=botv,
             telv=version.__version__,
             pyv=python_version(),
-            user=DEFAULTUSER,
+            user=await get_uname(),
             db=db,
         )
     )
@@ -166,8 +163,7 @@ async def amireallyaliveuser(username):
         output = '.aliveu [new user without brackets] nor can it be empty'
         if not (message == '.aliveu' or message[7:8] != ' '):
             newuser = message[8:]
-            global DEFAULTUSER
-            DEFAULTUSER = newuser
+            await set_uname(newuser)
             output = 'Successfully changed user to ' + newuser + '!'
         await username.edit("`" f"{output}" "`")
 
@@ -178,8 +174,7 @@ async def amireallyalivereset(ureset):
     """ For .resetalive command, reset the username in the .alive command. """
     if not ureset.text[0].isalpha() and ureset.text[0] not in ("/", "#", "@",
                                                                "!"):
-        global DEFAULTUSER
-        DEFAULTUSER = uname().node
+        await set_uname(uname().node)
         await ureset.edit("`" "Successfully reset user for alive!" "`")
 
 

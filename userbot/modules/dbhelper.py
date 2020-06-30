@@ -1,3 +1,5 @@
+from importlib import reload
+from platform import uname
 from userbot import MONGO, REDIS
 
 
@@ -495,3 +497,26 @@ async def is_excluded(chatid):
         return False
     else:
         return True
+
+
+# Username
+async def chk_uname():
+    data = MONGO.uname.find_one({"def_uname": {"$exists": True}})
+
+    if data:
+        return data
+    else:
+        MONGO.uname.insert_one({"def_uname": uname().node})
+        return reload(data)
+
+
+async def set_uname(username):
+    data = await chk_uname()
+    MONGO.uname.update_one(
+        {"_id": data["_id"]}, {"$set": {"def_uname": username}},
+    )
+
+
+async def get_uname():
+    data = await chk_uname()
+    return data["def_uname"]
